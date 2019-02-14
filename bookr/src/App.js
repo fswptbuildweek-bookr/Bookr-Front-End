@@ -1,5 +1,10 @@
 import React, { Component } from 'react';
+import axios from 'axios';
+import Navigation from './components/Navigation';
+import SearchResultComponent from './components/SearchResultComponent';
 import './App.css';
+
+const API_KEY = process.env.GOOGLE_BOOKS_API_KEY;
 
 const userBooks = {
   books: [
@@ -44,12 +49,45 @@ class App extends Component {
     })
   }
 
+  updateSearch = e => {
+    this.setState({
+      searchInput: e.target.value
+    })
+  }
+
+  getBookByTitle = title => {
+    title = this.state.searchInput
+    console.log(title);
+    axios
+      .get(`https://www.googleapis.com/books/v1/volumes?q=${title}=${API_KEY}`)
+      .then(response => {
+        console.log(response.data.items)
+        this.setState({
+          searchResult: response.data.items
+        })
+      })
+      .catch(error => {
+        console.log(error)
+      })
+
+      this.setState({
+        searchInput: ''
+      })
+  }
 
   render() {
-    console.log(this.state.reviewedBooks)
+
+    console.log(this.state.searchInput)
     return (
       <div className="App">
-        <h1> Search Component Goes Here</h1>
+        <Navigation
+          getBookByTitle={this.getBookByTitle}
+          value={this.state.searchInput}
+          updateSearch={this.updateSearch} />
+        { this.state.searchResult.length !== 0 && <SearchResultComponent searchResult={this.state.searchResult}/>}
+
+
+
       </div>
     );
   }
