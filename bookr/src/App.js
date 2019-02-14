@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
+import { Route, withRouter } from 'react-router-dom';
 import axios from 'axios';
 import Navigation from './components/Navigation';
 import SearchResultComponent from './components/SearchResultComponent';
+import BookList from './components/BookList';
 import './App.css';
 
 const API_KEY = process.env.GOOGLE_BOOKS_API_KEY;
@@ -85,6 +87,10 @@ class App extends Component {
           value={this.state.searchInput}
           updateSearch={this.updateSearch} />
         { this.state.searchResult.length !== 0 && <SearchResultComponent searchResult={this.state.searchResult}/>}
+        <Route
+          exact path="/"
+          render={(props) => <BookList {...props } />}
+        />
 
 
 

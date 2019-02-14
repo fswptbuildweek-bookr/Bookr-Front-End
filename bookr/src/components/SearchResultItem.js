@@ -28,7 +28,7 @@ const SearchResultItem = props => {
 
     <BookDiv>
       { imageLink ? <img src={book.imageLinks.smallThumbnail} alt={book.title}/> : "No Thumbnail Found"}
-      <BookTitle> {title? title : "no title"}</BookTitle>
+      <BookTitle> {title? title.substring(0,40): "no title"}</BookTitle>
       <h2>{authors? authors[0] : "Author Unknown"}</h2>
       <ReviewItButton> Review It </ReviewItButton>
     </BookDiv>
