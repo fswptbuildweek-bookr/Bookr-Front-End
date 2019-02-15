@@ -45,7 +45,7 @@ class App extends Component {
       searchInput: '',
       searchResult: [],
       reviewedBooks: [],
-      isLoggedIn: false,
+      isLoggedIn: true,
     }
   }
 

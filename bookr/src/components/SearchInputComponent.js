@@ -18,7 +18,7 @@ const SearchInputComponent = props => {
         onChange={props.updateSearch}
         name="searchInput"
         value={props.searchInput}/>
-        <button onClick={props.getBookByTitle}/>
+        <button onClick={props.getBookByTitle}>Search</button>
         </SearchBoxContainer>
     )
 }
