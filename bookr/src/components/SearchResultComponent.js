@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import SearchResultItem from './SearchResultItem';
+import { BookListTitle } from './BookList';
 
 const SearchResultContainer = styled.div`
   background-color: #0741ad;
@@ -23,6 +24,7 @@ const SearchResultComponent = props => {
   console.log(props.searchResult)
   return(
     <SearchResultContainer>
+      <BookListTitle> Search Results </BookListTitle>
       { props.searchResult.map(book => (
         <SearchResultItem key={book.id} book ={book}/>
       ))}

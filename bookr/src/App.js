@@ -4,23 +4,27 @@ import axios from 'axios';
 import Navigation from './components/Navigation';
 import SearchResultComponent from './components/SearchResultComponent';
 import BookList from './components/BookList';
+import LogInComponent from './components/LogInComponent';
 import './App.css';
 
 const API_KEY = process.env.GOOGLE_BOOKS_API_KEY;
 
-const userBooks = {
-  books: [
+const userBooks = [
     {"title": "Test book",
+    "bookID": "1k5fadBfa",
     "author": "Book Author",
     "publisher": "Columbia books",
     "image": "http://books.google.com/books/content?id=pIs9Em38dAoC&printsec=frontcover&img=1&zoom=1&edge=curl&imgtk=AFLRE721Zj_q3mq62Uoto-yeCuhEA3H4feL1rQiv9BniDBFGeQAZksGdXKv6th9kCcIDG2oiDiliAH3aO5__kiJdFntKktEzNxj5n6YYo7fHm7_mbasbdDcOyds6LX46cYzEprCX7bVG&source=gbs_api",
     "review": [
       {"username": "MLopez",
+      "userID": 1,
       "review": "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt"},
       {"username": "Panda_boi",
       "review": "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt panda panda panda"}
-    ]},
+      ]
+    },
     {"title": "Reviewed Book",
+    "bookID": "135edgagat5",
     "author": "JK Rowling",
     "publisher": "Penguin books",
     "image": "http://books.google.com/books/content?id=5iTebBW-w7QC&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api",
@@ -33,7 +37,6 @@ const userBooks = {
 
   ]
 
-}
 
 class App extends Component {
   constructor(props){
@@ -42,6 +45,7 @@ class App extends Component {
       searchInput: '',
       searchResult: [],
       reviewedBooks: [],
+      isLoggedIn: false,
     }
   }
 
@@ -78,25 +82,28 @@ class App extends Component {
   }
 
   render() {
-
-    console.log(this.state.searchInput)
+    const isLoggedIn = this.state.isLoggedIn;
     return (
       <div className="App">
-        <Navigation
-          getBookByTitle={this.getBookByTitle}
-          value={this.state.searchInput}
-          updateSearch={this.updateSearch} />
-        { this.state.searchResult.length !== 0 && <SearchResultComponent searchResult={this.state.searchResult}/>}
-        <Route
-          exact path="/"
-          render={(props) => <BookList {...props } />}
-        />
+      { isLoggedIn ? (
+        <div>
+          <Navigation
+            getBookByTitle={this.getBookByTitle}
+            value={this.state.searchInput}
+            updateSearch={this.updateSearch} />
+          { this.state.searchResult.length !== 0 && <SearchResultComponent searchResult={this.state.searchResult}/>}
+          <Route
+            exact path="/"
+            render={(props) => <BookList {...props } books={this.state.reviewedBooks} />}
+          />
+        </div>
 
-
-
+      ): (
+        <LogInComponent isLoggedIn={this.state.isLoggedIn} />
+      )}
       </div>
     );
   }
 }
 
-export default App;
+export default withRouter(App);

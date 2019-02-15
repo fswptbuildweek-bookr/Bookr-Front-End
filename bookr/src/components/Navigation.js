@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 
 import logo from '../public/images/logo.png';
@@ -18,7 +18,6 @@ const ImageContainer = styled.div`
   width: 300px;
   height: 200px;
 `;
-
 
 
 const Navigation = props => {
