@@ -1,4 +1,5 @@
 import React from 'react';
+import axios from 'axios';
 
 class LogInComponent extends React.Component{
   constructor(props){
@@ -7,7 +8,8 @@ class LogInComponent extends React.Component{
       signUp: false,
       usernameInput:'',
       passwordInput: '',
-      passwordInputCheck: ''
+      passwordInputCheck: '',
+      matchError: ''
     }
   }
 
@@ -28,12 +30,55 @@ class LogInComponent extends React.Component{
       signUp: false
     })
   }
+
+  signUpOnClickHandler = () => {
+    const newUser = {
+      username: this.state.usernameInput,
+      password: this.state.passwordInput
+    }
+    if (this.state.passwordInput === this.state.passwordInputCheck){
+      axios.post('http://localhost:3300/api/signup/', newUser)
+      .then(response => {
+        localStorage.setItem('jwt', response.data.token)
+      })
+      .then(() => {
+        this.props.history.push('/userpage');
+      })
+    } else {
+      this.setState({matchError: 'PASSWORD MUST MATCH'})
+    }
+  }
+
+  logInOnClickHandler = () => {
+    const registeredUser = {
+      username: this.state.usernameInput,
+      password: this.state.passwordInput
+    }
+
+    axios.post('http://localhost:3300/api/login/', registeredUser)
+    .then(response => {
+      localStorage.setItem('jwt', response.data.token)
+    })
+    .then(() => {
+      this.props.history.push('/userpage');
+    })
+    .catch(error => {
+      console.log('error', error);
+    })
+  }
+
   render(){
+    console.log(this.state.usernameInput)
+    console.log(this.state.passwordInput)
+    console.log(this.state.passwordInputCheck)
+    console.log(this.state.passwordInput === this.state.passwordInputCheck)
     const signUp = this.state.signUp;
     return(
+
       <div>
         { !signUp ? (
           <div>
+            <h1> Sign In </h1>
             <label> USERNAME</label><br/>
             <input
               onChange={this.handleInputChange}
@@ -47,11 +92,12 @@ class LogInComponent extends React.Component{
               type="text"
               name="passwordInput"
               value={this.state.passwordInput} /><br/>
-            <button> Log In </button>
-            <p> No account? Sign up <button onClick={this.signUpComponentClickHandler}> Here </button></p>
+            <button onClick={this.logInOnClickHandler}> Log In </button>
+            <p> Don't have an account? Sign up <button onClick={this.signUpComponentClickHandler}> Here </button></p>
           </div>
         ) : (
           <div>
+            <h1> Sign Up </h1>
             <label> USERNAME</label><br/>
             <input
               onChange={this.handleInputChange}
@@ -71,8 +117,9 @@ class LogInComponent extends React.Component{
               type="text"
               name="passwordInputCheck"
               value={this.state.passwordInputCheck} /><br/>
-            <button> SignUp </button>
+            <button onClick={this.signUpOnClickHandler}> SignUp </button>
             <p> Already have an account? Log In <button onClick={this.logInComponentclickHandler}> Here </button></p>
+            <div> <h1>{this.state.matchError }</h1></div>
           </div>
         )}
       </div>

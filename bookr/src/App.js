@@ -9,6 +9,7 @@ import './App.css';
 
 const API_KEY = process.env.GOOGLE_BOOKS_API_KEY;
 
+
 const userBooks = [
     {"title": "Test book",
     "bookID": "1k5fadBfa",
@@ -45,11 +46,12 @@ class App extends Component {
       searchInput: '',
       searchResult: [],
       reviewedBooks: [],
-      isLoggedIn: true,
+      isLoggedIn: false,
     }
   }
 
   componentDidMount(){
+    const token = localStorage.getItem('jwt');
     this.setState({
       reviewedBooks: userBooks
     })
@@ -85,7 +87,6 @@ class App extends Component {
     const isLoggedIn = this.state.isLoggedIn;
     return (
       <div className="App">
-      { isLoggedIn ? (
         <div>
           <Navigation
             getBookByTitle={this.getBookByTitle}
@@ -94,13 +95,13 @@ class App extends Component {
           { this.state.searchResult.length !== 0 && <SearchResultComponent searchResult={this.state.searchResult}/>}
           <Route
             exact path="/"
+            render={(props) => <LogInComponent {...props } />}
+          />
+          <Route
+            exact path="/userpage"
             render={(props) => <BookList {...props } books={this.state.reviewedBooks} />}
           />
         </div>
-
-      ): (
-        <LogInComponent isLoggedIn={this.state.isLoggedIn} />
-      )}
       </div>
     );
   }

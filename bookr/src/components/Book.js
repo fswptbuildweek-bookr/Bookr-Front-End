@@ -14,6 +14,7 @@ const Book = props => {
     <BookContainer>
       { imageLink ? <img src={book.image} alt={book.title}/> : "No Thumbnail Found"}
       <h1> {book.title} </h1>
+      <h2> {book.author} </h2>
     </BookContainer>
   )
 }
