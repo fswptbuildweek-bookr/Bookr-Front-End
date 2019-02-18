@@ -51,7 +51,6 @@ class App extends Component {
   }
 
   componentDidMount(){
-    const token = localStorage.getItem('jwt');
     this.setState({
       reviewedBooks: userBooks
     })
@@ -84,7 +83,6 @@ class App extends Component {
   }
 
   render() {
-    const isLoggedIn = this.state.isLoggedIn;
     return (
       <div className="App">
         <div>
@@ -100,6 +98,10 @@ class App extends Component {
           <Route
             exact path="/userpage"
             render={(props) => <BookList {...props } books={this.state.reviewedBooks} />}
+          />
+          <Route
+            exact path="/:id/review"
+            render={(props) => <BookList {...props }  />}
           />
         </div>
       </div>
