@@ -21,7 +21,6 @@ const SearchResultContainer = styled.div`
 `;
 
 const SearchResultComponent = props => {
-  console.log(props.searchResult)
   return(
     <SearchResultContainer>
       <BookListTitle> Search Results </BookListTitle>

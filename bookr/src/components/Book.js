@@ -7,7 +7,6 @@ import styled from 'styled-components';
  `;
 
 const Book = props => {
-  console.log(props.book);
   const book = props.book;
   const imageLink = props.book.image;
   return(

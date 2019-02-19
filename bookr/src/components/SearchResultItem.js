@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 
 const BookDiv = styled.div`
   display: inline-block;
@@ -24,6 +25,7 @@ const SearchResultItem = props => {
   const authors = book.authors;
   const publisher = book.publisher;
   const imageLink = book.imageLinks;
+  const id = props.book.id
 
   return (
     <BookDiv>
@@ -31,7 +33,7 @@ const SearchResultItem = props => {
       <BookTitle> {title? title.substring(0,40): "no title"}</BookTitle>
       <BookInfo>{authors? authors[0] : "Author Unknown"}</BookInfo>
       <BookInfo> {publisher? publisher: "Publisher Unkown"}</BookInfo>
-      <ReviewItButton> Review It </ReviewItButton>
+      <Link to={{pathname: id + '/review', state: { id: id, title: title, authors: authors, publisher: publisher, imageLink: imageLink} }}><ReviewItButton> Review It </ReviewItButton></Link>
     </BookDiv>
   )
 }

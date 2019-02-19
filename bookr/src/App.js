@@ -5,6 +5,7 @@ import Navigation from './components/Navigation';
 import SearchResultComponent from './components/SearchResultComponent';
 import BookList from './components/BookList';
 import LogInComponent from './components/LogInComponent';
+import ReviewComponent from './components/ReviewComponent';
 import './App.css';
 
 const API_KEY = process.env.GOOGLE_BOOKS_API_KEY;
@@ -68,7 +69,6 @@ class App extends Component {
     axios
       .get(`https://www.googleapis.com/books/v1/volumes?q=${title}=${API_KEY}`)
       .then(response => {
-        console.log(response.data.items)
         this.setState({
           searchResult: response.data.items
         })
@@ -82,11 +82,18 @@ class App extends Component {
       })
   }
 
+  resetSearch = () => {
+    this.setState({
+      searchResult: [],
+    })
+  }
+
   render() {
     return (
       <div className="App">
         <div>
           <Navigation
+            resetSearch = {this.resetSearch}
             getBookByTitle={this.getBookByTitle}
             value={this.state.searchInput}
             updateSearch={this.updateSearch} />
@@ -101,7 +108,8 @@ class App extends Component {
           />
           <Route
             exact path="/:id/review"
-            render={(props) => <BookList {...props }  />}
+            render={(props) => <ReviewComponent {...props }
+            resetSearch = {this.resetSearch} />}
           />
         </div>
       </div>
