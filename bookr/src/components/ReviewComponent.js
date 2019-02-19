@@ -15,7 +15,8 @@ const BookReviewContainer = styled.div`
 
 const BookReviewAllDataDiv = styled.div`
 display: flex;
-justify-content: space-around;`;
+justify-content: space-around;
+align-items: center;`;
 
 const BookInfoContainer = styled.div`
 display: flex;
@@ -41,12 +42,20 @@ const ReviewBodyContainer = styled.div`
   align-items: center;
 `;
 
-const BookSpan = styled.span`
-color:  #E57452;`;
+const PublishReviewButton = styled.div`
+padding: 15px 15px;
+font-size: 1.3em;
+color: #F5F5F5;
+background: #0741AD;
+border-radius: 10px;`
 class ReviewComponent extends React.Component{
   constructor(props){
     super(props);
     this.state={
+      title: '',
+      author: '',
+      publisher: '',
+      image: '',
       review: "",
       rating: 0
     }
@@ -55,6 +64,12 @@ class ReviewComponent extends React.Component{
 
   componentDidMount(){
     this.props.resetSearch();
+    this.setState({
+      title: this.props.location.state.title,
+      author: this.props.location.state.authors[0],
+      publisher: this.props.location.state.publisher,
+      image: this.props.location.state.imageLink.thumbnail
+    })
   }
 
   changeRating(newRating){
@@ -62,29 +77,44 @@ class ReviewComponent extends React.Component{
     this.setState({ rating: newRating})
   }
 
+  onChangeReviewHandler = e => {
+    this.setState({
+      review: e.target.value
+    })
+  }
 
+
+  publishReview = e => {
+    e.preventDefault();
+    const newReview = {
+      title: this.state.title,
+      author: this.state.author,
+      publisher: this.state.publisher,
+      image: this.state.image,
+      rating: {
+        rating: this.state.rating,
+        review: this.state.review
+      }
+    }
+  }
 
   render(){
-    console.log(this.props);
-    console.log(this.state);
-    console.log(this.state.rating);
-    console.log(this.props.location.state)
-    const bookLocation = this.props.location.state
     return(
       <BookReviewContainer>
         <h1> Review A Book </h1>
         <BookReviewAllDataDiv>
           <BookInfoContainer>
             <BookImageDiv>
-            <BookImage src={bookLocation.imageLink.thumbnail} />
+            <BookImage src={this.state.image} />
             </BookImageDiv>
             <BookTextInfo>
               <h1> Title: </h1>
-              <h2> {bookLocation.title}</h2>
+              <h2> {this.state.title}</h2>
               <h1> Author: </h1>
-              <h2> {bookLocation.authors}</h2>
+              <h2> {this.state.author}</h2>
               <h1> Publisher: </h1>
-              <h2> {bookLocation.publisher}</h2>
+              <h2> {this.state.publisher}</h2>
+              <PublishReviewButton onClick={this.publishReview}> Publish Review </PublishReviewButton>
             </BookTextInfo>
           </BookInfoContainer>
           <ReviewBodyContainer>
@@ -95,6 +125,7 @@ class ReviewComponent extends React.Component{
               color2={'#E57452'}
               size={55}
               value={this.state.rating}/>
+            <textarea name="review" rows="30" cols="100" value={this.state.review} onChange={this.onChangeReviewHandler}></textarea>
           </ReviewBodyContainer>
         </BookReviewAllDataDiv>
 
