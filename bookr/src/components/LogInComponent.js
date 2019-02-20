@@ -68,10 +68,6 @@ class LogInComponent extends React.Component{
   }
 
   render(){
-    console.log(this.state.usernameInput)
-    console.log(this.state.passwordInput)
-    console.log(this.state.passwordInputCheck)
-    console.log(this.state.passwordInput === this.state.passwordInputCheck)
     const signUp = this.state.signUp;
     return(
 
