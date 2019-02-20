@@ -1,5 +1,4 @@
 import React from 'react';
-import axios from 'axios';
 import styled from 'styled-components';
 import ReactStars from 'react-stars';
 
@@ -64,12 +63,15 @@ class ReviewComponent extends React.Component{
 
   componentDidMount(){
     this.props.resetSearch();
+
     this.setState({
       title: this.props.location.state.title,
       author: this.props.location.state.authors[0],
       publisher: this.props.location.state.publisher,
       image: this.props.location.state.imageLink.thumbnail
-    })
+    });
+
+
   }
 
   changeRating(newRating){
@@ -85,20 +87,35 @@ class ReviewComponent extends React.Component{
 
 
   publishReview = e => {
+
     e.preventDefault();
-    const newReview = {
-      title: this.state.title,
-      author: this.state.author,
-      publisher: this.state.publisher,
-      image: this.state.image,
-      rating: {
-        rating: this.state.rating,
-        review: this.state.review
+    const token = localStorage.getItem('jwt');
+    const reqOptions ={
+      headers: {
+        Authorization:token
       }
     }
+
+     const newReview = {
+       book:{
+         title: this.state.title,
+         author: this.state.author,
+         publisher: this.state.publisher,
+         image: this.state.image,
+         review: {
+           rating: this.state.rating,
+           content: this.state.review
+         }
+       }
+      }
+
+      this.props.addBook(newReview, reqOptions);
+    this.props.history.push('/userpage');
   }
 
+
   render(){
+
     return(
       <BookReviewContainer>
         <h1> Review A Book </h1>

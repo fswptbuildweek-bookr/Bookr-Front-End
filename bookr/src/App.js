@@ -6,38 +6,10 @@ import SearchResultComponent from './components/SearchResultComponent';
 import BookList from './components/BookList';
 import LogInComponent from './components/LogInComponent';
 import ReviewComponent from './components/ReviewComponent';
+import ReviewedBook from './components/ReviewedBook';
 import './App.css';
 
 const API_KEY = process.env.GOOGLE_BOOKS_API_KEY;
-
-
-const userBooks = [
-    {"title": "Test book",
-    "bookID": "1k5fadBfa",
-    "author": "Book Author",
-    "publisher": "Columbia books",
-    "image": "http://books.google.com/books/content?id=pIs9Em38dAoC&printsec=frontcover&img=1&zoom=1&edge=curl&imgtk=AFLRE721Zj_q3mq62Uoto-yeCuhEA3H4feL1rQiv9BniDBFGeQAZksGdXKv6th9kCcIDG2oiDiliAH3aO5__kiJdFntKktEzNxj5n6YYo7fHm7_mbasbdDcOyds6LX46cYzEprCX7bVG&source=gbs_api",
-    "review": [
-      {"username": "MLopez",
-      "userID": 1,
-      "review": "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt"},
-      {"username": "Panda_boi",
-      "review": "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt panda panda panda"}
-      ]
-    },
-    {"title": "Reviewed Book",
-    "bookID": "135edgagat5",
-    "author": "JK Rowling",
-    "publisher": "Penguin books",
-    "image": "http://books.google.com/books/content?id=5iTebBW-w7QC&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api",
-    "review": [
-      {"username": "coca-cola",
-      "review": "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt"},
-      {"username": "pepsi",
-      "review": "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt panda panda panda"}
-    ]},
-
-  ]
 
 
 class App extends Component {
@@ -48,13 +20,53 @@ class App extends Component {
       searchResult: [],
       reviewedBooks: [],
       isLoggedIn: false,
+      loops: 0
     }
   }
 
   componentDidMount(){
-    this.setState({
-      reviewedBooks: userBooks
+    this.setState({loading: true}, ()=>{
+      const token= localStorage.getItem('jwt');
+      const reqOptions = {
+        headers:{
+            Authorization:token
+        }
+      }
+      axios.get('http://localhost:3300/api/books/all', reqOptions)
+        .then(response => {
+          console.log("Response from get", response);
+          this.setState({reviewedBooks: response.data.books})
+        })
+        .catch(error => {
+          console.log(error)
+        })
     })
+  }
+
+  // componentDidUpdate(){
+  //     const token= localStorage.getItem('jwt');
+  //     const reqOptions = {
+  //       headers:{
+  //           Authorization:token
+  //       }
+  //     }
+  //     axios.get('http://localhost:3300/api/books/all', reqOptions)
+  //       .then(response => {
+  //         this.setState({reviewedBooks: response.data.books})
+  //       })
+  //       .catch(error => {
+  //         return error;
+  //       })
+  // }
+
+  addBook(newReview, reqOptions) {
+    axios.post('http://localhost:3300/api/reviews', newReview, reqOptions)
+      .then(response => {
+        return response;
+      })
+      .catch(error => {
+        return error
+      })
   }
 
   updateSearch = e => {
@@ -107,10 +119,19 @@ class App extends Component {
             render={(props) => <BookList {...props } books={this.state.reviewedBooks} />}
           />
           <Route
-            exact path="/:id/review"
-            render={(props) => <ReviewComponent {...props }
+            exact path="/userpage/:id"
+            render={(props) => <ReviewedBook {...props }
+            books = {this.state.reviewedBooks}
+            addBook = {this.addBook}
             resetSearch = {this.resetSearch} />}
           />
+          <Route
+            exact path="/userpage/:id/review"
+            render={(props) => <ReviewComponent {...props }
+            addBook = {this.addBook}
+            resetSearch = {this.resetSearch} />}
+          />
+
         </div>
       </div>
     );

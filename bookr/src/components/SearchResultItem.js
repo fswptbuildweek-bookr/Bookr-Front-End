@@ -33,10 +33,10 @@ const SearchResultItem = props => {
       <BookTitle> {title? title.substring(0,40): "no title"}</BookTitle>
       <BookInfo>{authors? authors[0] : "Author Unknown"}</BookInfo>
       <BookInfo> {publisher? publisher: "Publisher Unkown"}</BookInfo>
-      <Link to={{pathname: id + '/review', state: { id: id, title: title, authors: authors, publisher: publisher, imageLink: imageLink} }}><ReviewItButton> Review It </ReviewItButton></Link>
+      <Link to={{pathname: `/userpage/${id}/review`, state: { id: id, title: title, authors: authors, publisher: publisher, imageLink: imageLink} }}><ReviewItButton> Review It </ReviewItButton></Link>
     </BookDiv>
   )
 }
 
 
-export default SearchResultItem
+export default SearchResultItem;
