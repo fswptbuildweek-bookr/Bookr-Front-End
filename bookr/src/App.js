@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Route, withRouter } from 'react-router-dom';
 import axios from 'axios';
+
 import Navigation from './components/Navigation';
 import SearchResultComponent from './components/SearchResultComponent';
 import BookList from './components/BookList';
@@ -11,7 +12,6 @@ import './App.css';
 
 const API_KEY = process.env.GOOGLE_BOOKS_API_KEY;
 
-
 class App extends Component {
   constructor(props){
     super(props)
@@ -20,12 +20,10 @@ class App extends Component {
       searchResult: [],
       reviewedBooks: [],
       isLoggedIn: false,
-      loops: 0
     }
   }
 
   componentDidMount(){
-    this.setState({loading: true}, ()=>{
       const token= localStorage.getItem('jwt');
       const reqOptions = {
         headers:{
@@ -34,13 +32,11 @@ class App extends Component {
       }
       axios.get('http://localhost:3300/api/books/all', reqOptions)
         .then(response => {
-          console.log("Response from get", response);
           this.setState({reviewedBooks: response.data.books})
         })
         .catch(error => {
           console.log(error)
         })
-    })
   }
 
   // componentDidUpdate(){
@@ -58,6 +54,20 @@ class App extends Component {
   //         return error;
   //       })
   // }
+
+deleteReview(id, reqOptions){
+  axios.delete(`http://localhost:3300/api/reviews/${id}`, reqOptions)
+    .then(response => {
+      return response;
+    })
+    .catch(error => {
+      return error;
+    })
+}
+
+editReview(){
+  console.log('edit review clicked');
+}
 
   addBook(newReview, reqOptions) {
     axios.post('http://localhost:3300/api/reviews', newReview, reqOptions)
@@ -77,7 +87,6 @@ class App extends Component {
 
   getBookByTitle = title => {
     title = this.state.searchInput
-    console.log(title);
     axios
       .get(`https://www.googleapis.com/books/v1/volumes?q=${title}=${API_KEY}`)
       .then(response => {
@@ -86,7 +95,7 @@ class App extends Component {
         })
       })
       .catch(error => {
-        console.log(error)
+        return error;
       })
 
       this.setState({
@@ -109,29 +118,36 @@ class App extends Component {
             getBookByTitle={this.getBookByTitle}
             value={this.state.searchInput}
             updateSearch={this.updateSearch} />
+
           { this.state.searchResult.length !== 0 && <SearchResultComponent searchResult={this.state.searchResult}/>}
+
           <Route
             exact path="/"
             render={(props) => <LogInComponent {...props } />}
           />
+
           <Route
-            exact path="/userpage"
-            render={(props) => <BookList {...props } books={this.state.reviewedBooks} />}
+            exact path="/userpage/"
+            render={(props) => <BookList {...props } history={this.props.history} books={this.state.reviewedBooks} />}
           />
+
           <Route
             exact path="/userpage/:id"
             render={(props) => <ReviewedBook {...props }
+            history={this.props.history}
             books = {this.state.reviewedBooks}
             addBook = {this.addBook}
+            editReview = {this.editReview}
+            deleteReview = {this.deleteReview }
             resetSearch = {this.resetSearch} />}
           />
           <Route
             exact path="/userpage/:id/review"
             render={(props) => <ReviewComponent {...props }
             addBook = {this.addBook}
+            history={this.props.history}
             resetSearch = {this.resetSearch} />}
           />
-
         </div>
       </div>
     );
