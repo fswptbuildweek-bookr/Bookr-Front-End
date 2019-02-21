@@ -96,26 +96,24 @@ class ReviewComponent extends React.Component{
       }
     }
 
-     const newReview = {
-       book:{
-         title: this.state.title,
-         author: this.state.author,
-         publisher: this.state.publisher,
-         image: this.state.image,
-         review: {
-           rating: this.state.rating,
-           content: this.state.review
-         }
+    const newReview = {
+     book:{
+       title: this.state.title,
+       author: this.state.author,
+       publisher: this.state.publisher,
+       image: this.state.image,
+       review: {
+         rating: this.state.rating,
+         content: this.state.review
        }
-      }
+     }
+    }
 
-      this.props.addBook(newReview, reqOptions);
-    this.props.history.push('/userpage');
+    this.props.addBook(newReview, reqOptions);
+      this.props.history.push('/userpage');
   }
 
-
   render(){
-
     return(
       <BookReviewContainer>
         <h1> Review A Book </h1>

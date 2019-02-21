@@ -21,18 +21,6 @@ class BookList extends React.Component{
     }
   }
 
-
-  // AddBook(newReview, reqOptions) {
-  //   axios.post('http://localhost:3300/api/reviews', newReview, reqOptions)
-  //     .then(response => {
-  //       console.log(response);
-  //     })
-  //     .catch(error => {
-  //       console.log(error);
-  //     })
-  // }
-
-
   render(){
     return (
       <div>
