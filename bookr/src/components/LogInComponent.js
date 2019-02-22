@@ -40,6 +40,7 @@ class LogInComponent extends React.Component{
       axios.post('http://localhost:3300/api/signup/', newUser)
       .then(response => {
         localStorage.setItem('jwt', response.data.token)
+        localStorage.setItem('user', newUser.username);
       })
       .then(() => {
         this.props.history.push('/userpage');

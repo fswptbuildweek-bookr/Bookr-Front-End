@@ -72,7 +72,6 @@ class EditModal extends React.Component{
   editReview = e => {
     const currentUser = localStorage.getItem('user');
     const reviewer = this.state.reviewer;
-
     if (currentUser === reviewer){
       const token= localStorage.getItem('jwt');
       const reqOptions = {
@@ -80,16 +79,15 @@ class EditModal extends React.Component{
             Authorization:token
         }
       }
-
+      const reviewId = this.state.reviewId
       const review ={
         content: this.state.content,
         rating: this.state.rating,
-        review_id: this.state.reviewId,
         book_id: this.state.bookId
       }
-      console.log(review);
+      this.props.editReview(reviewId, review, reqOptions);
+      window.location.reload();
 
-      this.props.editReview();
     } else {
       this.setState({
         error: 'User can only edit their own post'

@@ -2,7 +2,6 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 import ReactStars from 'react-stars';
 import styled from 'styled-components';
-
 import EditModal from './EditModal';
 
 
@@ -45,7 +44,7 @@ class Review extends React.Component {
   constructor(props){
     super(props)
     this.state={
-      display: 'block'
+      display: 'none'
     }
   }
 
@@ -68,7 +67,9 @@ class Review extends React.Component {
     const review_id = this.props.id
 
     this.props.deleteReview(review_id, reqOptions);
-    this.props.history.push('/userpage');
+
+    this.props.history.push('/userpage')
+
   }
 
   render(){

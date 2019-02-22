@@ -5,6 +5,8 @@ import { Link } from 'react-router-dom';
 
  const BookContainer = styled.div`
   width: 300px;
+  height: 600px;
+  margin: 10px; 
  `;
 
 const Book = props => {

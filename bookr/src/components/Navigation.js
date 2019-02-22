@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 
 import logo from '../public/images/logo.png';
 
@@ -24,7 +25,7 @@ const Navigation = props => {
   return(
     <NavigationContainer>
       <ImageContainer>
-        <img src={logo} alt="Logo" />
+        <Link to="/userpage" ><img src={logo} alt="Logo" /></Link>
       </ImageContainer>
       <SearchInputComponent
       getBookByTitle={props.getBookByTitle}

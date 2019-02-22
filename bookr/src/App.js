@@ -39,21 +39,21 @@ class App extends Component {
         })
   }
 
-  // componentDidUpdate(){
-  //     const token= localStorage.getItem('jwt');
-  //     const reqOptions = {
-  //       headers:{
-  //           Authorization:token
-  //       }
-  //     }
-  //     axios.get('http://localhost:3300/api/books/all', reqOptions)
-  //       .then(response => {
-  //         this.setState({reviewedBooks: response.data.books})
-  //       })
-  //       .catch(error => {
-  //         return error;
-  //       })
-  // }
+  componentDidUpdate(){
+      const token= localStorage.getItem('jwt');
+      const reqOptions = {
+        headers:{
+            Authorization:token
+        }
+      }
+      axios.get('http://localhost:3300/api/books/all', reqOptions)
+        .then(response => {
+          this.setState({reviewedBooks: response.data.books})
+        })
+        .catch(error => {
+          return error;
+        })
+  }
 
 deleteReview(id, reqOptions){
   axios.delete(`http://localhost:3300/api/reviews/${id}`, reqOptions)
@@ -65,14 +65,21 @@ deleteReview(id, reqOptions){
     })
 }
 
-editReview(){
-  console.log('edit review clicked');
+editReview(id, reqOptions, reqBody){
+  axios.put(`http://localhost:3300/api/reviews/${id}`, reqOptions, reqBody)
+    .then(response=>{
+      console.log(response)
+    })
+    .catch(error => {
+      console.log(error)
+    })
 }
 
   addBook(newReview, reqOptions) {
     axios.post('http://localhost:3300/api/reviews', newReview, reqOptions)
       .then(response => {
-        return response;
+        console.log(response);
+        // return response;
       })
       .catch(error => {
         return error
