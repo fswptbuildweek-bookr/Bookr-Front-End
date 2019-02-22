@@ -127,7 +127,6 @@ class ReviewComponent extends React.Component{
   }
 
   render(){
-    console.log(this.props);
     return(
       <BookReviewContainer>
         <h1> Review A Book </h1>

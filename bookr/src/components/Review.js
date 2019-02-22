@@ -55,9 +55,6 @@ const DeleteMessage = styled.div`
   }`;
 
 
-
-
-
 class Review extends React.Component {
   constructor(props){
     super(props)
