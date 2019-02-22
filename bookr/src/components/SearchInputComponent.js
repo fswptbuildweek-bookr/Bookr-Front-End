@@ -6,7 +6,7 @@ const SearchBoxContainer = styled.div`
 
 const SearchInput = styled.input`
   margin: 10px 15px;
-
+  font-size: 1.5em;
 `;
 
 

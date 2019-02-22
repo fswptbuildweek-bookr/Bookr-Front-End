@@ -37,9 +37,10 @@ class LogInComponent extends React.Component{
       password: this.state.passwordInput
     }
     if (this.state.passwordInput === this.state.passwordInputCheck){
-      axios.post('http://localhost:3300/api/signup/', newUser)
+      axios.post('https://bookr-server.herokuapp.com/api/signup/', newUser)
       .then(response => {
         localStorage.setItem('jwt', response.data.token)
+        localStorage.setItem('user', newUser.username);
       })
       .then(() => {
         this.props.history.push('/userpage');
@@ -55,9 +56,8 @@ class LogInComponent extends React.Component{
       password: this.state.passwordInput
     }
 
-    axios.post('http://localhost:3300/api/login/', registeredUser)
+    axios.post('https://bookr-server.herokuapp.com/api/login/', registeredUser)
     .then(response => {
-      console.log(registeredUser.username);
       localStorage.setItem('user', registeredUser.username);
       localStorage.setItem('jwt', response.data.token)
     })
@@ -65,7 +65,7 @@ class LogInComponent extends React.Component{
       this.props.history.push('/userpage');
     })
     .catch(error => {
-      console.log('error', error);
+      return error;
     })
   }
 

@@ -10,7 +10,8 @@ export const BookListTitle = styled.h1`
 const BooksContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
-  align-items: flex-end;
+  align-self: flex-start;
+  align-items: flex-start;
 
 `;
 class BookList extends React.Component{

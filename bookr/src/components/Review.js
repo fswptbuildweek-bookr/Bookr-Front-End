@@ -2,7 +2,6 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 import ReactStars from 'react-stars';
 import styled from 'styled-components';
-
 import EditModal from './EditModal';
 
 
@@ -29,7 +28,8 @@ display: flex;
 `;
 
 const Button = styled.button`
-margin: 0px 10px;
+margin: 0px 10px 0px 0px;
+font-size: 1.4em;
 padding: 10px 15px;`;
 
 const EditButton = styled(Button)`
@@ -40,12 +40,27 @@ const DeleteButton = styled(Button)`
 background: #D82B21;
 color: #FFF;`;
 
+const DeleteMessage = styled.div`
+  display: flex;
+  width: 400px;
+  align-items: center;
+  text-align: center;
+  background: red;
+  color: white;
+  font-size: 1.5em;
+  height: 100px;
+
+  p{
+    margin: auto;
+  }`;
+
 
 class Review extends React.Component {
   constructor(props){
     super(props)
     this.state={
-      display: 'block'
+      display: 'none',
+      message: '',
     }
   }
 
@@ -65,15 +80,24 @@ class Review extends React.Component {
         Authorization:token
       }
     }
-    const review_id = this.props.id
-
+    const review_id = this.props.id;
     this.props.deleteReview(review_id, reqOptions);
-    this.props.history.push('/userpage');
+    this.setState({message: 'Review deleted'})
+    window.setTimeout(() => {
+      this.props.history.push('/userpage')
+    }, 1000);
   }
 
   render(){
     return(
       <ReviewDiv>
+        { this.state.message &&
+          <DeleteMessage>
+            <p>
+              {this.state.message}
+            </p>
+          </DeleteMessage>
+        }
         <div>
           <ReactStars
           count={5}

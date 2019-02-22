@@ -47,6 +47,10 @@ font-size: 1.3em;
 color: #F5F5F5;
 background: #0741AD;
 border-radius: 10px;`
+
+const ReviewTextArea = styled.textarea`
+  font-size: 1.9em;
+`;
 class ReviewComponent extends React.Component{
   constructor(props){
     super(props);
@@ -70,8 +74,17 @@ class ReviewComponent extends React.Component{
       publisher: this.props.location.state.publisher,
       image: this.props.location.state.imageLink.thumbnail
     });
+  }
 
-
+  componentDidUpdate(previousProps, previousState){
+    if (previousProps.location.pathname !== this.props.location.pathname){
+      this.setState({
+        title: this.props.location.state.title,
+        author: this.props.location.state.authors[0],
+        publisher: this.props.location.state.publisher,
+        image: this.props.location.state.imageLink.thumbnail
+      })
+    }
   }
 
   changeRating(newRating){
@@ -140,7 +153,7 @@ class ReviewComponent extends React.Component{
               color2={'#E57452'}
               size={55}
               value={this.state.rating}/>
-            <textarea name="review" rows="30" cols="100" value={this.state.review} onChange={this.onChangeReviewHandler}></textarea>
+            <ReviewTextArea name="review" placeholder="Review here" rows="15" cols="60" value={this.state.review} onChange={this.onChangeReviewHandler}></ReviewTextArea>
           </ReviewBodyContainer>
         </BookReviewAllDataDiv>
 
