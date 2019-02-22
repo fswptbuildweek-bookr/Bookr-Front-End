@@ -20,8 +20,23 @@ const ImageContainer = styled.div`
   height: 200px;
 `;
 
+const SignOutBUtton = styled.button`
+  height: 50px;
+  background: #0741ad;
+  color: white;
+  margin-top: 10px;
+  font-size: 1.3em;
+  padding: 10px 15px;`;
+
+
+
 
 const Navigation = props => {
+
+  const signOut = () => {
+    localStorage.clear();
+  }
+
   return(
     <NavigationContainer>
       <ImageContainer>
@@ -31,6 +46,7 @@ const Navigation = props => {
       getBookByTitle={props.getBookByTitle}
       searchInput={props.searchInput}
       updateSearch={props.updateSearch} />
+    <Link to="/" onClick={signOut}><SignOutBUtton> Sign Out </SignOutBUtton></Link>
     </NavigationContainer>
   )
 }

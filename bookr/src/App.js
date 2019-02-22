@@ -40,6 +40,7 @@ class App extends Component {
   }
 
   componentDidUpdate(){
+      let newBooks;
       const token= localStorage.getItem('jwt');
       const reqOptions = {
         headers:{
@@ -53,6 +54,8 @@ class App extends Component {
         .catch(error => {
           return error;
         })
+
+        
   }
 
 deleteReview(id, reqOptions){
