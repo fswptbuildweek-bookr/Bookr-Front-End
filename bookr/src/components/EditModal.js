@@ -102,7 +102,7 @@ class EditModal extends React.Component{
 
     } else {
       this.setState({
-        error: 'User can only edit their own post'
+        error: 'Users can only edit their own post'
       })
     }
 
